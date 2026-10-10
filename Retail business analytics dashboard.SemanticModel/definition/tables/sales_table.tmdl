@@ -1,0 +1,162 @@
+table sales_table
+	lineageTag: e377bb84-3339-459c-b10b-775777d4d8d7
+
+	column 'Row ID'
+		dataType: int64
+		formatString: 0
+		lineageTag: c4a40af1-8b33-4d5b-a205-32ab98139ba6
+		summarizeBy: count
+		sourceColumn: Row ID
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Order ID'
+		dataType: string
+		lineageTag: 5f76b4e5-1ac8-4dc9-b7ed-cedee2458117
+		summarizeBy: none
+		sourceColumn: Order ID
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Order Date'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: de197b02-1f2a-4ae1-a463-a8de04fb6ca6
+		summarizeBy: none
+		sourceColumn: Order Date
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Ship Date'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 478b5f72-4c79-4f92-a31e-eafb466f8afb
+		summarizeBy: none
+		sourceColumn: Ship Date
+
+		variation Variation
+			isDefault
+			relationship: 08a56e30-3409-4255-8981-637b3f58430d
+			defaultHierarchy: LocalDateTable_6df0f820-0285-476d-953a-8977a640cd86.'Date Hierarchy'
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Customer ID'
+		dataType: string
+		lineageTag: b35ce978-ae5b-4eef-a63a-8d33d7a932cb
+		summarizeBy: none
+		sourceColumn: Customer ID
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Location_id
+		dataType: string
+		lineageTag: 238407e6-7eec-48b0-8577-89bc92a2f392
+		summarizeBy: none
+		sourceColumn: Location_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Product_ID
+		dataType: string
+		lineageTag: ed38c199-e5e7-490e-af7c-bc90cd314efe
+		summarizeBy: none
+		sourceColumn: Product_ID
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Sales
+		dataType: double
+		lineageTag: 5356e412-4572-4bbb-8ee0-9f3d356ab83e
+		summarizeBy: sum
+		sourceColumn: Sales
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Quantity
+		dataType: int64
+		formatString: 0
+		lineageTag: 096fe251-b305-43f4-bb09-12c286d7e459
+		summarizeBy: sum
+		sourceColumn: Quantity
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Discount
+		dataType: double
+		lineageTag: 71b832fa-6522-4d51-961a-0c957f6f22f9
+		summarizeBy: sum
+		sourceColumn: Discount
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Profit
+		dataType: double
+		lineageTag: 76b77113-c40f-4327-9bed-33aafee6e6f6
+		summarizeBy: sum
+		sourceColumn: Profit
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Shipping Cost'
+		dataType: double
+		lineageTag: ce2d6f8c-97eb-4c4a-89a2-d5c5d4f729c2
+		summarizeBy: sum
+		sourceColumn: Shipping Cost
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Order Priority'
+		dataType: string
+		lineageTag: 54c9aa99-c0a4-4e15-966c-550fd0948c3f
+		summarizeBy: none
+		sourceColumn: Order Priority
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition sales_table = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\avkzr\OneDrive\Documents\power bi\excel work tables\global_retail_sales_data.xlsx"), null, true),
+				    sales_table_Table = Source{[Item="sales_table",Kind="Table"]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(sales_table_Table,{{"Row ID", Int64.Type}, {"Order ID", type text}, {"Order Date", type datetime}, {"Ship Date", type datetime}, {"Customer ID", type text}, {"Location_id", type text}, {"Product_ID", type text}, {"Sales", type number}, {"Quantity", Int64.Type}, {"Discount", type number}, {"Profit", type number}, {"Shipping Cost", type number}, {"Order Priority", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

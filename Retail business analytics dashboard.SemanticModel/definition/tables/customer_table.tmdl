@@ -1,0 +1,45 @@
+table customer_table
+	lineageTag: d0423531-fbe3-4d5e-aa80-1ac28a4a0b51
+
+	column 'Customer ID'
+		dataType: string
+		lineageTag: 99770eeb-c10f-40ff-8a37-798e986dd927
+		summarizeBy: none
+		sourceColumn: Customer ID
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Customer Name'
+		dataType: string
+		lineageTag: c172d598-9ec3-4c13-9cbd-bf7b6d6c933b
+		summarizeBy: none
+		sourceColumn: Customer Name
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Segment
+		dataType: string
+		lineageTag: 162c6069-9b1e-4bdc-ab04-8779ba43e16d
+		summarizeBy: none
+		sourceColumn: Segment
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition customer_table = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\avkzr\OneDrive\Documents\power bi\excel work tables\global_retail_sales_data.xlsx"), null, true),
+				    customer_table_Table = Source{[Item="customer_table",Kind="Table"]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(customer_table_Table,{{"Customer ID", type text}, {"Customer Name", type text}, {"Segment", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

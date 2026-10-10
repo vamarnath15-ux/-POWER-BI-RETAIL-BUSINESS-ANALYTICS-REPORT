@@ -1,0 +1,156 @@
+table calculated_table
+	lineageTag: a981cde8-6e04-4bb7-baad-9a25415a235d
+
+	measure total_sales = SUM(sales_table[Sales])
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: 7a810ebc-bca6-44d8-81c0-ab8429aaba22
+
+		changedProperty = IsHidden
+
+	measure total_quantity = SUM(sales_table[Quantity])
+		formatString: 0
+		lineageTag: e8dd5a6b-d591-4d00-ac97-fd894f10124a
+
+		changedProperty = IsHidden
+
+	measure total_profit = SUM(sales_table[Profit])
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: a4f5825a-2667-4736-8168-8ce994d03f25
+
+		changedProperty = IsHidden
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure total_sales_ly =
+			
+			CALCULATE([total_sales],
+			SAMEPERIODLASTYEAR(date_table[Date]))
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: f6ae54db-9bdb-4f16-8026-a554baa686a2
+
+		changedProperty = IsHidden
+
+	measure yoy_sales_growth =
+			
+			DIVIDE([total_sales] - [total_sales_ly],[total_profit])
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 3ca596b6-929c-4d3f-8b7a-3b784c2bf7f5
+
+		changedProperty = IsHidden
+
+	measure Avg_sales_per_order =
+			
+			DIVIDE(
+			    [total_sales],
+			    DISTINCTCOUNT(sales_table[Order ID]))
+		formatString: #,0
+		lineageTag: ad977ed7-1d51-47c9-bb5f-b8817cc26c23
+
+		changedProperty = IsHidden
+
+	measure top5_selling_products =
+			
+			CALCULATE([total_sales],
+			    TOPN(5,product_table,product_table[Product Name],DESC))
+		lineageTag: ec42dea4-9df8-4e77-999b-542888a24f09
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure yoy_growth = ```
+			
+			var yoy_ = 
+			DIVIDE([total_sales]-[total_sales_ly],[total_sales_ly])
+			
+			RETURN
+			IF([total_sales]<> BLANK() && [total_sales_ly]<> BLANK(),
+			IF(yoy_>0,
+			"🟢"& FORMAT(yoy_,"0.00%"),
+			"🔴"& FORMAT(yoy_,"0.00%")
+			),
+			"No data")
+			```
+		lineageTag: f7f81051-56c7-4638-a0e7-98387242972d
+
+	measure total_profit_ly =
+			
+			CALCULATE([total_profit],
+			SAMEPERIODLASTYEAR(date_table[Date]))
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: 01210714-6665-405c-b4b1-8b0a7b298c00
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure yoy_profit_growth =
+			
+			DIVIDE([total_profit]-[total_profit_ly],[total_sales])
+		lineageTag: f2201a72-5033-4073-8bbf-4a51e4d2fa6b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure avg_profit_per_order =
+			
+			DIVIDE(
+			    [total_profit],
+			    DISTINCTCOUNT(sales_table[Order ID]))
+		lineageTag: fb4673d6-452e-4493-9c40-45f79651061c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure total_customer = DISTINCTCOUNT(sales_table[Customer ID])
+		formatString: 0
+		lineageTag: 0d399c58-b0d8-4a48-a90f-17278edda8e0
+
+	measure TOTAL_ORDER = DISTINCTCOUNT(sales_table[Order ID])
+		formatString: 0
+		lineageTag: 8e0332af-3f77-4765-b5b8-cc3ada49a39f
+
+	measure total_product = DISTINCTCOUNT(sales_table[Product_ID])
+		formatString: 0
+		lineageTag: 33f38e69-6176-46c4-b1d9-0dfe3a28d15e
+
+	measure 'AVG_SALES_PER STATE' = DIVIDE([total_sales],DISTINCTCOUNT(location_table[State]))
+		lineageTag: 796bbbdd-9701-4ec2-b8a2-284f56e417d8
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure profit_rank_state =
+			
+			VAR top_rankers_ =
+			RANKX(
+			    ALL(location_table[State]),
+			    [total_profit],,DESC,
+			    Dense
+			)
+			
+			VAR profit_rank_ =
+			IF(
+			    top_rankers_ <= rank_demo[rank_demo Value],
+			    [total_profit]
+			)
+			
+			RETURN
+			profit_rank_
+		formatString: 0
+		lineageTag: d59a38b8-2fbf-4729-81a2-a1213ada8114
+
+	measure chart_title = ```
+			
+			VAR selected_rank_ = 
+			SELECTEDVALUE(rank_demo[rank_demo],10)
+			RETURN
+			"top " & selected_rank_ & " states by profit"
+			```
+		lineageTag: 206e5e71-56b1-4f6d-9bcf-eebeb0b78d5f
+
+	partition calculated_table = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Column1 = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Column1", type text}}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Changed Type",{"Column1"})
+				in
+				    #"Removed Columns"
+
+	annotation PBI_ResultType = Table
+

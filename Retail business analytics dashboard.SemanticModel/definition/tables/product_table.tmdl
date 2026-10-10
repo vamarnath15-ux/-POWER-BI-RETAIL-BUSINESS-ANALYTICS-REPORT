@@ -1,0 +1,55 @@
+table product_table
+	lineageTag: 27cdd69f-e55f-4432-96d5-7dba305dee71
+
+	column Product_ID
+		dataType: string
+		lineageTag: f702ac1d-f4f5-4122-836e-b339cf1a17f7
+		summarizeBy: none
+		sourceColumn: Product_ID
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Product Name'
+		dataType: string
+		lineageTag: 353317cc-6380-4474-b0d9-adb4d7a3f98c
+		summarizeBy: none
+		sourceColumn: Product Name
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Category
+		dataType: string
+		lineageTag: 6a3a9869-57c3-4836-8355-8bee9b034651
+		summarizeBy: none
+		sourceColumn: Category
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Sub-Category
+		dataType: string
+		lineageTag: f1d3583a-0bc4-44f0-a8ee-8800e4a97dd0
+		summarizeBy: none
+		sourceColumn: Sub-Category
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition product_table = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\avkzr\OneDrive\Documents\power bi\excel work tables\global_retail_sales_data.xlsx"), null, true),
+				    product_table_Table = Source{[Item="product_table",Kind="Table"]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(product_table_Table,{{"Product_ID", type text}, {"Product Name", type text}, {"Category", type text}, {"Sub-Category", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

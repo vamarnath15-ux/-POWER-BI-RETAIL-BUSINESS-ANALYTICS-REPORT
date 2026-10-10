@@ -1,0 +1,26 @@
+relationship 08a56e30-3409-4255-8981-637b3f58430d
+	joinOnDateBehavior: datePartOnly
+	fromColumn: sales_table.'Ship Date'
+	toColumn: LocalDateTable_6df0f820-0285-476d-953a-8977a640cd86.Date
+
+relationship AutoDetected_03a365b1-5b3d-4e4b-b6db-d55b22e1d9b7
+	fromColumn: sales_table.Location_id
+	toColumn: location_table.Location_id
+
+relationship AutoDetected_c26a0170-ee73-416e-9c8f-5ac59baad06e
+	fromColumn: sales_table.Product_ID
+	toColumn: product_table.Product_ID
+
+relationship AutoDetected_809a62c0-b42d-4eea-8cb2-612c6062a73f
+	fromColumn: sales_table.'Customer ID'
+	toColumn: customer_table.'Customer ID'
+
+relationship d7d9e321-e08b-41d7-9536-b345e6edcd00
+	joinOnDateBehavior: datePartOnly
+	fromColumn: date_table.Date
+	toColumn: LocalDateTable_5f7008ca-1b8b-4408-90e8-03d1eb62255c.Date
+
+relationship 92afcf93-9ffa-8139-8311-6d1638f2661e
+	fromColumn: sales_table.'Order Date'
+	toColumn: date_table.Date
+

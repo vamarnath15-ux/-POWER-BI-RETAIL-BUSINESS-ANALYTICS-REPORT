@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "Retail business analytics dashboard"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "dd8576e7-d686-4b56-b0b5-a2c767d0e6f5"
+  }
+}

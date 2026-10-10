@@ -1,0 +1,47 @@
+table date_table
+	lineageTag: 09b4ed7f-a1ac-42c5-8508-f89fa5eddccb
+
+	column Date
+		formatString: General Date
+		lineageTag: be45f51d-9e6b-4dd3-8842-c3fed8d01836
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Date]
+
+		variation Variation
+			isDefault
+			relationship: d7d9e321-e08b-41d7-9536-b345e6edcd00
+			defaultHierarchy: LocalDateTable_5f7008ca-1b8b-4408-90e8-03d1eb62255c.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year = YEAR(date_table[Date])
+		formatString: 0
+		lineageTag: ff274f85-0fbc-4380-8272-ac98eae64ebb
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column Month = FORMAT(date_table[Date],"mmmm")
+		dataType: string
+		lineageTag: afc21634-2501-409c-8acd-824ffe0ed094
+		summarizeBy: none
+		sortByColumn: MONTH_NUM
+
+		annotation SummarizationSetBy = Automatic
+
+	column MONTH_NUM = MONTH(date_table[Date])
+		formatString: 0
+		lineageTag: 88d80e8f-66d6-41ef-ab7c-f5582d5c0adc
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	partition date_table = calculated
+		mode: import
+		source =
+				
+				CALENDAR(DATE(2011,01,01),DATE(2014,12,31))
+
+	annotation PBI_Id = f2fcb0fca9b44315a10dcc8a9058490c
+

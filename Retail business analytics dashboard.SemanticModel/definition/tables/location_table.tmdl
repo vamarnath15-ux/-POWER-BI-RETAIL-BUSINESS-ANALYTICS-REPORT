@@ -1,0 +1,75 @@
+table location_table
+	lineageTag: e490df88-84db-4a61-9837-d303251eba67
+
+	column Location_id
+		dataType: string
+		lineageTag: 260c27d8-3feb-4352-88f4-fd5d62d9ca55
+		summarizeBy: none
+		sourceColumn: Location_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column City
+		dataType: string
+		lineageTag: 6fa7023f-a968-4f67-8321-e1f93800ef26
+		summarizeBy: none
+		sourceColumn: City
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column State
+		dataType: string
+		lineageTag: 63a97f03-d30b-4d4a-b88e-13cad5abc0da
+		summarizeBy: none
+		sourceColumn: State
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Country
+		dataType: string
+		lineageTag: 1db5db5f-31bc-4df6-93b9-4af418b0834b
+		summarizeBy: none
+		sourceColumn: Country
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Market
+		dataType: string
+		lineageTag: 9dd2a270-75c0-4412-9a46-5ffa64b782bd
+		summarizeBy: none
+		sourceColumn: Market
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Region
+		dataType: string
+		lineageTag: 44a5959d-9235-42c4-b825-6e0279a3c3fe
+		summarizeBy: none
+		sourceColumn: Region
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition location_table = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\avkzr\OneDrive\Documents\power bi\excel work tables\global_retail_sales_data.xlsx"), null, true),
+				    location_table_Table = Source{[Item="location_table",Kind="Table"]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(location_table_Table,{{"Location_id", type text}, {"City", type text}, {"State", type text}, {"Country", type text}, {"Market", type text}, {"Region", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

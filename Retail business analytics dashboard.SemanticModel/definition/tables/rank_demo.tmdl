@@ -1,0 +1,26 @@
+table rank_demo
+	lineageTag: 07afdcb3-017e-4b85-ab6e-68c0456c018c
+
+	measure 'rank_demo Value' = SELECTEDVALUE('rank_demo'[rank_demo])
+		formatString: 0
+		lineageTag: 5d3e321e-3f30-4036-8791-c664c7e315dd
+
+	column rank_demo
+		formatString: 0
+		lineageTag: 76bf9a68-0793-4093-8121-0b2bb5472785
+		summarizeBy: none
+		sourceColumn: [Value]
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 0
+				}
+
+		annotation SummarizationSetBy = User
+
+	partition rank_demo = calculated
+		mode: import
+		source = GENERATESERIES(1, 20, 1)
+
+	annotation PBI_Id = 436803886eda4fc3807194d88fa88a04
+

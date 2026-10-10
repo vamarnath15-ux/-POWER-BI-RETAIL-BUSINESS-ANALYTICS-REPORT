@@ -1,0 +1,75 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "1bf0f24a5aa1b2034d44",
+  "position": {
+    "x": 24.418673971980525,
+    "y": 71.511830917942959,
+    "z": 10000,
+    "height": 190.11681878184837,
+    "width": 361.047536585712,
+    "tabOrder": 10000
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "RETAIL BUSINESS ",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontFamily": "Candara",
+                      "fontSize": "44pt",
+                      "color": "#ffffff"
+                    }
+                  },
+                  {
+                    "value": "ANALYTICS REPORT",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontFamily": "Candara",
+                      "fontSize": "24pt",
+                      "color": "#ffffff"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "center"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#1F7A78'"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}
